@@ -1,0 +1,48 @@
+sw_volume: 100
+audio_device_state:1:my_fifo
+audio_device_state:1:PipeWire Sound Server
+state: stop
+random: 0
+repeat: 0
+single: 0
+consume: 0
+crossfade: 0
+mixrampdb: 0
+mixrampdelay: -1
+lastloadedplaylist: 
+playlist_begin
+0:02. Aphex Twin - The Waxen Pith.flac
+1:03 Pumpkin Pie.flac
+2:05 Geeks In Love.flac
+3:06 New Way Out.flac
+4:08 Akkranen.flac
+5:01 - Gratitude (Short Version).flac
+6:02 - Cool City.flac
+7:03 - Go Away.flac
+8:04 - Sucker For Mystery.flac
+9:05 - It Only Makes Me Laugh.flac
+10:06 - The Last Time.flac
+11:07 - Tough As Nails.flac
+12:08 - Lightning.flac
+13:09 - Everybody Needs.flac
+14:11 Heliobat.flac
+15:03. Aphex Twin - Wax The Nip.flac
+16:07. Aphex Twin - Start As You Mean To Go On.flac
+17:48. Aphex Twin - Blackbox Life Recorder 21f.flac
+18:01 Dead Sea Monkeys.flac
+19:17 Word Disassociation.flac
+20:11. I Don't Miss You Rävbur.flac
+21:01 Arkteon 1.flac
+22:squarepusher.  feed me weird things [1996].  06.  windscale 2.flac
+23:04 - Berceuse Rework (feat. mondëna quartet).flac
+24:03 - Driven.flac
+25:06 - Sweat.flac
+26:07 - Nothing Bad Ever Happens.flac
+27:08 - Wake Up (It's 1984).flac
+28:09 - Dead or Alive.flac
+29:10 - Pictures of You.flac
+30:11 - Little Guns.flac
+31:01. Coopers World.flac
+32:02. Beep Street.flac
+33:03. Rustic Raver.flac
+playlist_end
