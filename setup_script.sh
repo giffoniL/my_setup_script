@@ -26,7 +26,7 @@ install_apps() {
 
   sudo pacman -S --needed firefox-developer-edition micro niri wayland xorg xwayland-satellite code foot nicotine+ rofi vesktop-bin jdk-openjdk waydroid ttf-input-nerd inter-font starship swaybg swayimg steam capitaine-cursors timidity++ mpd ncmpcpp
 
-  paru -S --needed mojave-gtk-theme-git mcmojave
+  paru -S --needed mojave-gtk-theme-git
 
   git clone https://github.com/vinceliuice/McMojave-circle.git
 
@@ -52,9 +52,9 @@ configure_apps() {
     cp -vr "./niri-config.kdl" "$HOME/.config/niri/config.kdl"
     cp -vr "./foot-config.ini" "$HOME/.config/foot/foot.ini"
 
-    cp -vr ".audio_stuff/.mpd" "$HOME/"
-    cp -vr ".audio_stuff/.ncmpcpp" "$HOME/"
-    cp -vr ".audio_stuff/mpd" "$HOME/.config/"
+    cp -vr "./audio_stuff/.mpd" "$HOME/"
+    cp -vr "./audio_stuff/.ncmpcpp" "$HOME/"
+    cp -vr "./audio_stuff/mpd" "$HOME/.config/"
 
 
     cp -vr "./wallpaper.jpg" "$HOME/Pictures/"
@@ -62,8 +62,6 @@ configure_apps() {
     echo "Finished configuring apps."
 
 }
-
-
 
 
 install_apps
