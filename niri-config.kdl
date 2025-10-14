@@ -230,7 +230,7 @@ layout {
 }
 
 spawn-at-startup "xwayland-satellite"
-spawn-at-startup "swaybg" "-i" "/home/giffoni/Pictures/wallpaper.jpeg"
+spawn-at-startup "swaybg" "-i" "/home/giffoni/Pictures/wallpaper.jpg"
 
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "gtk-theme" "Mojave-Dark-solid"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "icon-theme" "McMojave-circle"
