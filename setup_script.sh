@@ -1,18 +1,20 @@
 #!/bin/sh
 
-
-
 install_apps() {
 
   sudo pacman -Syu
 
-  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace inter-font swaybg swayimg steam timidity++ mpd ncmpcpp
+  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace inter-font swaybg swayimg steam timidity++ mpd ncmpcp gnome-themes-extra sassc mako brightnessctl
 
-#  paru -S --needed mojave-gtk-theme-git
+  paru -S mpd-discord-rpc
 
-#  git clone https://github.com/vinceliuice/McMojave-circle.git
+  git clone https://github.com/vinceliuice/Orchis-theme.git
 
-#  ./McMojave-circle/install.sh
+  ./Orchis-theme/install.sh -l
+
+  git clone https://github.com/vinceliuice/Tela-icon-theme.git
+
+  ./Tela-icon-theme/install.sh
 
   echo -e "\033[32mFinished installing apps.\033[0m"
 
@@ -22,22 +24,22 @@ configure_apps() {
 
     chsh -s /usr/bin/bash
 
-    mkdir -p "$HOME/.config/niri" "$HOME/.config/ghostty"
+    mkdir -p "$HOME/.config/""
+    cp -vr "./.config/*" "$HOME/.config/"
 
-    git config --global color.ui auto
-    git config --global user.name "Giffoni Lopes"
-    git config --global user.email "kgiffoni_@tuta.com"
-
-#    starship preset bracketed-segments -o ~/.config/starship.toml
-
-    cp -vr "./niri-config.kdl" "$HOME/.config/niri/config.kdl"
-    cp -vr "./ghostty-config" "$HOME/.config/ghostty/config"
+    cp -vr "./Pictures/*" "$HOME/Pictures/"
 
     cp -vr "./audio_stuff/.mpd" "$HOME/"
     cp -vr "./audio_stuff/.ncmpcpp" "$HOME/"
     cp -vr "./audio_stuff/mpd" "$HOME/.config/"
 
-    cp -vr "Pictures/*" "$HOME/Pictures/"
+    systemctl --user enable --now mpd
+    systemctl --user enable --now mpd-discord-rpc
+    
+    git config --global color.ui auto
+    git config --global user.name "Giffoni Lopes"
+    git config --global user.email "kgiffoni_@tuta.com"
+
 
     echo -e "\033[32mFinished configuring apps.\033[0m"
 
