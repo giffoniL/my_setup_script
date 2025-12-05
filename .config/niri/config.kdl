@@ -15,6 +15,7 @@ environment {
 }
 
 spawn-sh-at-startup "swaybg -i Pictures/Wallpaper/* -m fill"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme prefer-dark"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme 'Orchis-Dark'"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme 'Tela-dark'"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Ice'"

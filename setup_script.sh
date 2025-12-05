@@ -4,7 +4,12 @@ install_apps() {
 
   sudo pacman -Syu
 
-  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace inter-font swaybg swayimg steam timidity++ mpd ncmpcp gnome-themes-extra sassc mako brightnessctl
+  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace inter-font swaybg swayimg steam timidity++ mpd ncmpcp gnome-themes-extra sassc mako brightnessctl python python-pipx
+
+  pipx install beets
+  pipx install beets[fetchart]
+  pipx install beets[embedart]
+  pipx install beets[lastgenre]
 
   paru -S mpd-discord-rpc
 
@@ -24,14 +29,15 @@ configure_apps() {
 
     chsh -s /usr/bin/bash
 
-    mkdir -p "$HOME/.config/""
-    cp -vr "./.config/*" "$HOME/.config/"
+    mkdir -p $HOME/.config/
+    cp -vr ./.config/* $HOME/.config/
+    cp -vr ./giffoni/* $HOME/
 
-    cp -vr "./Pictures/*" "$HOME/Pictures/"
+    cp -vr ./Pictures/* $HOME/Pictures/
 
-    cp -vr "./audio_stuff/.mpd" "$HOME/"
-    cp -vr "./audio_stuff/.ncmpcpp" "$HOME/"
-    cp -vr "./audio_stuff/mpd" "$HOME/.config/"
+    cp -vr ./audio_stuff/.mpd $HOME/
+    cp -vr ./audio_stuff/.ncmpcpp $HOME/
+    cp -vr ./audio_stuff/mpd $HOME/.config/
 
     systemctl --user enable --now mpd
     systemctl --user enable --now mpd-discord-rpc

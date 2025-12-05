@@ -1,0 +1,12 @@
+directory: ~/Music/Sorted
+library: ~/.config/beets/musiclibrary.db
+
+import:
+    move: yes
+
+plugins: musicbrainz fetchart embedart lastgenre
+
+paths:
+    default: $albumartist/$album%aunique{}/$track $title
+    singleton: Non-Album/$artist/$title
+    comp: Compilations/$album%aunique{}/$track $title
