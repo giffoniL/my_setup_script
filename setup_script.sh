@@ -4,12 +4,10 @@ install_apps() {
 
   sudo pacman -Syu
 
-  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace swaybg swayimg steam timidity++ mpd ncmpcpp gnome-themes-extra sassc imagemagick dialog inkscape optipng mako brightnessctl python python-pipx obsidian flatpak nwg-look tree
+  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace swaybg swayimg steam timidity++ mpd ncmpcpp mako brightnessctl python python-pipx obsidian flatpak tree
 
-  pipx install beets
-  pipx install beets[fetchart]
-  pipx install beets[embedart]
-  pipx install beets[lastgenre]
+  pipx install "beets[fetchart,embedart,lastgenre]"
+  pipx ensurepath
 
   paru -S mpd-discord-rpc todoist-appimage apple-fonts
 
@@ -31,7 +29,7 @@ install_apps() {
 
 configure_apps() {
 
-    chsh -s /usr/bin/bash
+  chsh -s /usr/bin/bash
 
 	install -D ./giffoni/Pictures/Wallpaper/wallpaper.jpg $HOME/Pictures/Wallpaper/wallpaper.jpg
 	install -D ./giffoni/.ncmpcpp/config $HOME/.ncmpcpp/config
