@@ -4,7 +4,7 @@ install_apps() {
 
   sudo pacman -Syu
 
-  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace swaybg swayimg steam timidity++ mpd ncmpcp gnome-themes-extra sassc imagemagick dialog inkscape optipng mako brightnessctl python python-pipx obsidian flatpak nwg-look
+  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace swaybg swayimg steam timidity++ mpd ncmpcpp gnome-themes-extra sassc imagemagick dialog inkscape optipng mako brightnessctl python python-pipx obsidian flatpak nwg-look tree
 
   pipx install beets
   pipx install beets[fetchart]
@@ -15,12 +15,15 @@ install_apps() {
 
   git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git --depth=1
 
-  ./WhiteSur-gtk-theme/install.sh -o solid -a alt -t blue -N mojave -l
-  ./WhiteSur-gtk-theme/tweaks.sh -f 
+  ./WhiteSur-gtk-theme/install.sh -o solid -a alt -t blue -l
 
   git clone https://github.com/vinceliuice/WhiteSur-icon-theme.git
 
   ./WhiteSur-icon-theme/install.sh -a
+
+  git clone https://github.com/vinceliuice/WhiteSur-cursors.git
+
+  ./WhiteSur-cursors/install.sh
 
   echo -e "\033[32mFinished installing apps.\033[0m"
 
@@ -30,8 +33,12 @@ configure_apps() {
 
     chsh -s /usr/bin/bash
 
-    mkdir -p $HOME/.config/    
-    cp -vri ./giffoni/* $HOME/
+	install -D ./giffoni/Pictures/Wallpaper/wallpaper.jpg $HOME/Pictures/Wallpaper/wallpaper.jpg
+	install -D ./giffoni/.ncmpcpp/config $HOME/.ncmpcpp/config
+	install -D ./giffoni/.config/beets/config.yaml $HOME/.config/beets/config.yaml
+	install -D ./giffoni/.config/ghostty/config $HOME/.config/ghostty/config
+	install -D ./giffoni/.config/mpd/mpd.conf $HOME/.config/mpd/mpd.conf
+	install -D ./giffoni/.config/niri/config.kdl $HOME/.config/niri/config.kdl
 
     systemctl --user enable --now mpd
     systemctl --user enable --now mpd-discord-rpc
@@ -64,15 +71,10 @@ edit_grub() {
 
 }
 
-
-
-
 install_apps
 
 configure_apps
 
 edit_grub
-
-
 
 echo -e "\033[32mAll done. Restart and enjoy.\033[0m"

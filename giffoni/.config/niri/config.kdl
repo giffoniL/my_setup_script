@@ -15,15 +15,15 @@ environment {
 }
 
 spawn-sh-at-startup "swaybg -i Pictures/Wallpaper/* -m fill"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name 'SF-Pro'"
 // spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme prefer-dark"
 // spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme 'Orchis-Dark'"
 // spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme 'Tela-Dark'"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Ice'"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name 'SF-Pro'"
+// spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme 'WhiteSur-cursors'"
 
 cursor {
-    xcursor-theme "Bibata-Modern-Ice"
-    xcursor-size 24
+    xcursor-theme "WhiteSur-cursors"
+    xcursor-size 36
     hide-after-inactive-ms 10000
 }
 
