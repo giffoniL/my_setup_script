@@ -1,12 +1,26 @@
 directory: ~/Music/Sorted
 library: ~/.config/beets/musiclibrary.db
-
+per_disc_numbering: yes
 import:
     move: yes
-
-plugins: musicbrainz fetchart embedart lastgenre
-
+    timid: yes
+    from_scratch: yes
+    languages: en
+    bell: yes
+    
 paths:
-    default: $albumartist/$album%aunique{}/$track $title
-    singleton: Non-Album/$artist/$title
-    comp: Compilations/$album%aunique{}/$track $title
+    default: $albumartist/$album%aunique{} [$year - $country - $label - $catalognum]/$disc-$track $title
+    singleton: Looses/$artist/$disc-$track $title
+    comp: Compilations/$album%aunique{} [$year - $country - $label - $catalognum]/$disc-$track $title
+    
+plugins: musicbrainz fetchart embedart lastgenre scrub replaygain thumbnails info
+
+#discogs:
+#    user_token: "zPyrygwoxIxwkVJjrAiDQxBZxBINuTkzKzYjbBVz"
+#    data_source_mismatch_penalty: 0.1
+
+replaygain:
+    backend: ffmpeg
+
+
+

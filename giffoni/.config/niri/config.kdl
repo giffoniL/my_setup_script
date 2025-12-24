@@ -15,24 +15,23 @@ environment {
 }
 
 spawn-sh-at-startup "swaybg -i Pictures/Wallpaper/* -m fill"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name SF-Pro"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name InterVariable"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme prefer-dark"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme WhiteSur-Dark-solid-alt-blue"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme WhiteSur-dark"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme WhiteSur-cursors"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme Fluent-round-Dark-compact"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme Fluent-dark"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme macOS"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-size 40"
 
 cursor {
-    xcursor-theme "WhiteSur-cursors"
-    xcursor-size 36
+    xcursor-theme "macOS-White"
+    xcursor-size 40
     hide-after-inactive-ms 10000
 }
 
 input {
     keyboard {
         xkb {
-            // For example:
-            // layout "us,ru"
-            // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
+            layout "us(altgr-intl)"
         }
 
         numlock
@@ -103,6 +102,7 @@ layout {
     default-column-width { proportion 1.0; }
 
     focus-ring {
+   		off
         width 1
         active-color   "#808080"      // Medium gray
         inactive-color "#505050"      // Dark gray

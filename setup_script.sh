@@ -4,24 +4,20 @@ install_apps() {
 
   sudo pacman -Syu
 
-  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace swaybg swayimg steam timidity++ mpd ncmpcpp mako brightnessctl python python-pipx obsidian flatpak tree
+  sudo pacman -S --needed firefox micro niri wayland xorg xwayland-satellite code ghostty nicotine+ rofi vesktop-bin jdk-openjdk waydroid otf-monaspace swaybg swayimg steam timidity++ mpd ncmpcpp mako brightnessctl python python-pipx obsidian flatpak tree celluloid inter-font qbittorrent
 
-  pipx install "beets[fetchart,embedart,lastgenre]"
+  pipx install "beets[fetchart,embedart,lastgenre,scrub,replaygain,thumbnails,info]"
   pipx ensurepath
 
-  paru -S mpd-discord-rpc todoist-appimage apple-fonts
+  paru -S mpd-discord-rpc todoist-appimage apple_cursor
 
-  git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git --depth=1
+  git clone https://github.com/vinceliuice/Fluent-gtk-theme.git
 
-  ./WhiteSur-gtk-theme/install.sh -o solid -a alt -t blue -l
+  ./Fluent-gtk-theme/install.sh -l -s compact --tweaks round -c dark
 
-  git clone https://github.com/vinceliuice/WhiteSur-icon-theme.git
+  git clone https://github.com/vinceliuice/Fluent-icon-theme.git
 
-  ./WhiteSur-icon-theme/install.sh -a
-
-  git clone https://github.com/vinceliuice/WhiteSur-cursors.git
-
-  ./WhiteSur-cursors/install.sh
+  ./Fluent-icon-theme/install.sh
 
   echo -e "\033[32mFinished installing apps.\033[0m"
 
@@ -31,12 +27,12 @@ configure_apps() {
 
   chsh -s /usr/bin/bash
 
-	install -D ./giffoni/Pictures/Wallpaper/wallpaper.jpg $HOME/Pictures/Wallpaper/wallpaper.jpg
-	install -D ./giffoni/.ncmpcpp/config $HOME/.ncmpcpp/config
-	install -D ./giffoni/.config/beets/config.yaml $HOME/.config/beets/config.yaml
-	install -D ./giffoni/.config/ghostty/config $HOME/.config/ghostty/config
-	install -D ./giffoni/.config/mpd/mpd.conf $HOME/.config/mpd/mpd.conf
-	install -D ./giffoni/.config/niri/config.kdl $HOME/.config/niri/config.kdl
+  install -D ./giffoni/Pictures/Wallpaper/wallpaper.jpg $HOME/Pictures/Wallpaper/wallpaper.jpg
+  install -D ./giffoni/.ncmpcpp/config $HOME/.ncmpcpp/config
+  install -D ./giffoni/.config/beets/config.yaml $HOME/.config/beets/config.yaml
+  install -D ./giffoni/.config/ghostty/config $HOME/.config/ghostty/config
+  install -D ./giffoni/.config/mpd/mpd.conf $HOME/.config/mpd/mpd.conf
+  install -D ./giffoni/.config/niri/config.kdl $HOME/.config/niri/config.kdl
 
     systemctl --user enable --now mpd
     systemctl --user enable --now mpd-discord-rpc
