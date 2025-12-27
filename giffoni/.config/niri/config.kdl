@@ -11,14 +11,14 @@ environment {
   ELECTRON_OZONE_PLATFORM_HINT "auto"
   QT_QPA_PLATFORMTHEME "gtk3"
   QT_QPA_PLATFORMTHEME_QT6 "gtk3"
-  TERMINAL "ghostty"
+  TERMINAL "foot"  
 }
 
 spawn-sh-at-startup "swaybg -i Pictures/Wallpaper/* -m fill"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name InterVariable"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme prefer-dark"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme Fluent-round-Dark-compact"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme Fluent-dark"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name 'Adwaita Sans 11'"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface monospace-font-name 'Adwaita Mono 11'"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme Adwaita"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme Reversal-blue"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme macOS"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-size 40"
 
@@ -75,12 +75,6 @@ layout {
 
     gaps 16
 
-    // When to center a column when changing focus, options are:
-    // - "never", default behavior, focusing an off-screen column will keep at the left
-    //   or right edge of the screen.
-    // - "always", the focused column will always be centered.
-    // - "on-overflow", focusing a column will center it if it doesn't fit
-    //   together with the previously focused column.
     center-focused-column "never"
 
     preset-column-widths {
@@ -176,14 +170,14 @@ window-rule {
 }
 
 window-rule {
-    geometry-corner-radius 12
+    geometry-corner-radius 8
     clip-to-geometry true
 }
 
 binds {
 
-    Mod+Return { spawn "ghostty"; }
-    Mod+D { spawn-sh "rofi -show drun"; }
+    Mod+Return { spawn "foot"; }
+    Mod+D { spawn "fuzzel"; }
     //Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
