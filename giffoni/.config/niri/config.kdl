@@ -17,6 +17,7 @@ environment {
 spawn-sh-at-startup "swaybg -i Pictures/Wallpaper/* -m fill"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name 'Adwaita Sans 11'"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface monospace-font-name 'Adwaita Mono 11'"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme prefer-dark"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme Adwaita"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme Reversal-blue"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme macOS"
