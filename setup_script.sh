@@ -50,8 +50,8 @@ install_apps() {
 	PARU_PKGS=(mpd-discord-rpc apple_cursor)
 
 	log "Installing packages..."
-	sudo pacman -Syu --needed --noconfirm "${ALL_PACMAN_PKGS[@]}"
-	paru -S --needed --noconfirm "${PARU_PKGS[@]}"
+	sudo pacman -Syu --needed "${ALL_PACMAN_PKGS[@]}"
+	paru -S --needed "${PARU_PKGS[@]}"
 
 	log "Installing beets through pipx..."
 	pipx install "beets[fetchart,embedart,lastgenre,scrub,replaygain,thumbnails,info]"
