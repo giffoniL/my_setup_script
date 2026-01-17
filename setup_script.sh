@@ -43,7 +43,7 @@ check_deps() {
 
 install_apps() {
 
-	BASE_PKGS=(micro jdk-openjdk otf-monaspace noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl python python-pipx flatpak tree)
+	BASE_PKGS=(github-cli micro jdk-openjdk otf-monaspace noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl python python-pipx flatpak tree)
 	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite fuzzel mako swaybg foot)
 	APP_PKGS=(firefox zed nicotine+ vesktop-bin waydroid steam celluloid loupe fragments errands iotas)
 	ALL_PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
