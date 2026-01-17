@@ -43,7 +43,7 @@ check_deps() {
 
 install_apps() {
 
-	BASE_PKGS=(micro jdk-openjdk otf-monaspace noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd ncmpcpp brightnessctl python python-pipx flatpak tree)
+	BASE_PKGS=(micro jdk-openjdk otf-monaspace noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl python python-pipx flatpak tree)
 	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite fuzzel mako swaybg foot)
 	APP_PKGS=(firefox zed nicotine+ vesktop-bin waydroid steam celluloid loupe fragments errands iotas)
 	ALL_PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
@@ -54,7 +54,7 @@ install_apps() {
 	paru -S --needed "${PARU_PKGS[@]}"
 
 	log "Installing beets through pipx..."
-	pipx install "beets[fetchart,embedart,lastgenre,scrub,replaygain,thumbnails,info]"
+	pipx install "beets[fetchart,embedart,lastgenre,scrub,replaygain,info]"
 	pipx ensurepath
 
 	log "Installing Reversal-Blue icon theme..."
@@ -93,27 +93,59 @@ configure_apps() {
 		log "Installed: $dest"
 	done
 
-	
+
 	log "Enabling services..."
 	if systemctl --user list-units >/dev/null 2>&1; then
 		systemctl --user enable --now mako || warn "Failed to enable mako"
 		systemctl --user enable --now mpd || warn "Failed to enable mpd"
 		systemctl --user enable --now mpd-discord-rpc || warn "Failed to enable mpd-discord-rpc"
+		systemctl --user enable --now mpdscribble.service || warn "Failed to enable mpdscribble."
 	fi
 
     log "Configuring git..."
 	git config --global color.ui auto
-	git config --global user.name "Giffoni Lopes"
-	git config --global user.email "kgiffoni_@tuta.com"
 
 	log "Finished configuring apps."
+
+}
+
+giffoni_related() {
+
+    while true; do
+        read -p "Are you Giffoni, and is your HD plugged in? (y/n): " yn
+        case $yn in
+            [Yy]* )
+
+                git config --global user.name "Giffoni Lopes"
+                git config --global user.email "kgiffoni_@tuta.com"
+
+                log "Getting HD files..."
+
+                mkdir -p $HOME/.mpdscribble/
+                mkdir -p $HOME/.config/beets/
+                mkdir -p $HOME/Code/
+
+                sudo mount /dev/sda1 /mnt
+                rsync -avh --progress /mnt/.mpdscribble/mpdscribble.conf $HOME/.mpdscribble/
+                rsync -avh --progress /mnt/beets/config.yaml $HOME/.config/beets/
+                rsync -avh --progress /mnt/CurrentProject $HOME/Code/
+                rsync -avh --progress /mnt/Music/* $HOME/Music/
+
+                break;;
+            [Nn]* )
+                log "Alrighty then..."
+                break;;
+            * )
+                warn "Please answer yes or no.";;
+        esac
+    done
 
 }
 
 edit_grub() {
 
     log "Editing grub..."
-    
+
 	NEW_PARAMS="cpufreq.default_governor=performance intel_pstate=disable"
 	sudo awk -v new_params="$NEW_PARAMS" '
     /^GRUB_CMDLINE_LINUX_DEFAULT=/ {
@@ -137,5 +169,7 @@ check_deps pacman paru git awk sudo
 install_apps
 configure_apps
 edit_grub
+
+giffoni_related
 
 log "All done. Restart and enjoy."

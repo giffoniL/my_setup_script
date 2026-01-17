@@ -15,6 +15,7 @@ environment {
 }
 
 spawn-sh-at-startup "swaybg -i Pictures/Wallpaper/* -m fill"
+spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name 'Adwaita Sans 11'"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface monospace-font-name 'Adwaita Mono 11'"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme prefer-dark"
@@ -22,6 +23,31 @@ spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme Adwaita
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme Reversal-blue"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme macOS"
 spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-size 40"
+
+workspace "vesktop"
+workspace "firefox"
+workspace "task"
+workspace "music"
+
+window-rule {
+    match at-startup=true app-id="vesktop"
+    open-on-workspace "vesktop"
+}
+
+window-rule {
+    match at-startup=true app-id="firefox"
+    open-on-workspace "firefox"
+}
+
+window-rule {
+    match at-startup=true app-id="dev.zed.Zed"
+    open-on-workspace "task"
+}
+
+window-rule {
+    match at-startup=true app-id="foot"
+    open-on-workspace "music"
+}
 
 cursor {
     xcursor-theme "macOS-White"
@@ -180,6 +206,8 @@ binds {
     Mod+Return { spawn "foot"; }
     Mod+D { spawn "fuzzel"; }
     //Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+    Mod+BracketLeft  { spawn "mpc" "prev"; }
+    Mod+BracketRight  { spawn "mpc" "next"; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
