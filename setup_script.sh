@@ -44,9 +44,10 @@ check_deps() {
 install_apps() {
 
 	BASE_PKGS=(github-cli micro jdk-openjdk otf-monaspace noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl python python-pipx flatpak tree)
-	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite fuzzel mako swaybg foot)
-	APP_PKGS=(firefox zed nicotine+ vesktop-bin waydroid steam celluloid loupe fragments errands iotas)
+	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite fuzzel mako swaybg foot polkit-gnome)
+	APP_PKGS=(librewolf-bin zed nicotine+ vesktop-bin waydroid steam celluloid loupe fragments errands iotas)
 	ALL_PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
+
 	PARU_PKGS=(mpd-discord-rpc apple_cursor)
 
 	log "Installing packages..."
@@ -92,7 +93,6 @@ configure_apps() {
 		install -D "$src" "$dest"
 		log "Installed: $dest"
 	done
-
 
 	log "Enabling services..."
 	if systemctl --user list-units >/dev/null 2>&1; then
@@ -142,34 +142,26 @@ giffoni_related() {
 
 }
 
-edit_grub() {
+grub_tweaks() {
 
-    log "Editing grub..."
+    log "Installing grub theme..."
+    git clone https://github.com/harishnkr/bsol.git
+    sudo cp -vr ./bsol/bsol /boot/grub/themes/
+    BSOL_THEME="/boot/grub/themes/bsol/theme.txt"
+    sudo sed -i "s|^GRUB_THEME=.*|GRUB_THEME=\"$BSOL_THEME\"|" /etc/default/grub
 
-	NEW_PARAMS="cpufreq.default_governor=performance intel_pstate=disable"
-	sudo awk -v new_params="$NEW_PARAMS" '
-    /^GRUB_CMDLINE_LINUX_DEFAULT=/ {
-      match($0, /'\''(.*)'\''/, a)
-      current=a[1]
-      $0 = "GRUB_CMDLINE_LINUX_DEFAULT='\''" current " " new_params "'\''"
-    }
-    /^GRUB_TIMEOUT=/ {
-      $0 = "GRUB_TIMEOUT='\''0'\''"
-    }
-    {print}
-  ' /etc/default/grub | sudo tee /etc/default/grub >/dev/null
-
+    log "Applying new grub config..."
 	sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 	log "Finished editing grub."
+
 }
 
 sudo -v
 check_deps pacman paru git awk sudo
 install_apps
-configure_apps
-edit_grub
-
 giffoni_related
+configure_apps
+grub_tweaks
 
 log "All done. Restart and enjoy."
