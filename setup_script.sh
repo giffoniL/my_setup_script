@@ -43,9 +43,9 @@ check_deps() {
 
 install_apps() {
 
-	BASE_PKGS=(github-cli micro jdk-openjdk otf-monaspace terminus-font noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl python python-pipx flatpak tree)
+	BASE_PKGS=(github-cli micro jdk-openjdk otf-monaspace noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl python python-pipx flatpak tree)
 	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite fuzzel mako swaybg foot polkit-gnome)
-	APP_PKGS=(librewolf-bin zed nicotine+ vesktop-bin waydroid steam celluloid loupe fragments errands iotas)
+	APP_PKGS=(zed nicotine+ vesktop-bin waydroid steam celluloid loupe fragments errands iotas)
 	ALL_PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
 
 	PARU_PKGS=(mpd-discord-rpc apple_cursor)
@@ -68,9 +68,6 @@ install_apps() {
 }
 
 configure_apps() {
-
-    log "Setting up new TTY font..."
-    echo -e "\nFONT=ter-128b" | sudo tee -a "/etc/vconsole.conf" > /dev/null
 
 	log "Making MPD's log file that it doesn't make by itself for some reason..."
 	mkdir -p "$HOME/.local/state/mpd/"
@@ -123,14 +120,13 @@ giffoni_related() {
                 git config --global user.name "Giffoni Lopes"
                 git config --global user.email "kgiffoni_@tuta.com"
 
-                log "Getting HD files..."
+                log "Getting external hard drive files..."
                 mkdir -p $HOME/.mpdscribble/
                 mkdir -p $HOME/.config/beets/
-                mkdir -p $HOME/Code/
                 sudo mount /dev/sda1 /mnt
                 rsync -avh --progress /mnt/.mpdscribble/mpdscribble.conf $HOME/.mpdscribble/
                 rsync -avh --progress /mnt/beets/config.yaml $HOME/.config/beets/
-                rsync -avh --progress /mnt/CurrentProject $HOME/Code/
+                rsync -avh --progress /mnt/Code $HOME/
                 rsync -avh --progress /mnt/Music/* $HOME/Music/
 
                 break;;
