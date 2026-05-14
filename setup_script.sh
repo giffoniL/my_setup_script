@@ -103,6 +103,9 @@ configure_apps() {
 	log "Configuring git..."
 	git config --global color.ui auto
 
+	log "Changing user shell to fish..."
+	chsh -s /bin/fish
+
 	log "Finished configuring apps."
 }
 
