@@ -100,6 +100,9 @@ configure_apps() {
 		done
 	fi
 
+	# i prefer it this way tbh
+	sudo echo "\S (\l)" > /etc/issue
+
 	log "Configuring git..."
 	git config --global color.ui auto
 
