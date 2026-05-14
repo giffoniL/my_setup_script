@@ -49,7 +49,7 @@ install_apps() {
 	APP_PKGS=(zed nicotine+ nautilus vesktop waydroid steam celluloid loupe fragments obsidian)
 
 	PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
-	PARU_PKGS=(mpd-discord-rpc apple_cursor)
+	PARU_PKGS=(mpd-discord-rpc)
 	FLATPAK_PKGS=(io.github.arijanj.Mimic)
 
 	log "Installing packages..."
