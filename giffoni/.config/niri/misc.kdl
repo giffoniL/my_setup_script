@@ -1,4 +1,4 @@
-spawn-at-startup "swaybg" "-i" "~/Pictures/Wallpaper/*"
+spawn-sh-at-startup "swaybg -i ~/Pictures/Wallpaper/*"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "mako"
 
@@ -6,6 +6,8 @@ spawn-at-startup "vesktop"
 spawn-at-startup "zeditor"
 spawn-at-startup "firefox"
 spawn-at-startup "foot" "ncmpcpp"
+
+spawn-at-startup "niri" "msg" "action" "focus-workspace" "discord"
 
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "color-scheme" "prefer-dark"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "cursor-size" "40"
