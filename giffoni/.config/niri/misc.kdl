@@ -1,13 +1,14 @@
-spawn-sh-at-startup "swaybg -i ~/Pictures/Wallpaper/*"
-spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-spawn-sh-at-startup "mako"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme prefer-dark"
-//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme Adwaita"
-//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme Reversal-blue"
-//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name 'Adwaita Sans 11'"
-//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface monospace-font-name 'Adwaita Mono 11'"
-//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme macOS"
-spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-size 40"
+spawn-at-startup "swaybg" "-i" "~/Pictures/Wallpaper/*"
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "mako"
+
+spawn-at-startup "vesktop"
+spawn-at-startup "zeditor"
+spawn-at-startup "firefox"
+spawn-at-startup "foot" "ncmpcpp"
+
+spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "color-scheme" "prefer-dark"
+spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "cursor-size" "40"
 
 prefer-no-csd
 
