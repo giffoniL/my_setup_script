@@ -1,0 +1,36 @@
+input {
+    keyboard {
+        xkb {
+            // will fetch from locale
+        }
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        accel-profile "flat"
+        scroll-method "two-finger"
+    }
+
+    mouse {
+        accel-profile "flat"
+        middle-emulation
+    }
+
+    trackpoint {
+        accel-profile "flat"
+    }
+
+    trackball {
+        off
+    }
+
+    tablet {
+        off
+    }
+
+    touch {
+        off
+    }
+    workspace-auto-back-and-forth
+}

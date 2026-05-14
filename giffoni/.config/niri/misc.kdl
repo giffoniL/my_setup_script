@@ -1,0 +1,60 @@
+spawn-sh-at-startup "swaybg -i ~/Pictures/Wallpaper/*"
+spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-sh-at-startup "mako"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme prefer-dark"
+//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme Adwaita"
+//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme Reversal-blue"
+//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name 'Adwaita Sans 11'"
+//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface monospace-font-name 'Adwaita Mono 11'"
+//spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-theme macOS"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface cursor-size 40"
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+environment {
+}
+
+cursor {
+    xcursor-size 40
+    hide-after-inactive-ms 3000
+}
+
+overview {
+    zoom 0.5
+    // backdrop-color "#262626"
+
+    workspace-shadow {
+        // off
+        softness 40
+        spread 10
+        offset x=0 y=10
+        color "#00000050"
+    }
+}
+
+xwayland-satellite {
+    // off
+    path "xwayland-satellite"
+}
+
+clipboard {
+    // disable-primary
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+config-notification {
+    // disable-failed
+}
+
+blur {
+    // off
+    passes 3
+    offset 5.0
+    noise 0.00
+    saturation 1.0
+}

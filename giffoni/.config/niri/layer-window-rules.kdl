@@ -1,0 +1,53 @@
+workspace "discord"
+workspace "browser"
+workspace "task"
+workspace "music"
+
+window-rule {
+    geometry-corner-radius 16
+    clip-to-geometry true
+}
+
+window-rule {
+    match at-startup=true app-id="vesktop"
+    open-on-workspace "discord"
+}
+
+window-rule {
+    match at-startup=true app-id="firefox"
+    open-on-workspace "browser"
+}
+
+window-rule {
+    match at-startup=true app-id="dev.zed.Zed"
+    open-on-workspace "task"
+}
+
+window-rule {
+    match at-startup=true app-id="foot"
+    open-on-workspace "music"
+}
+
+window-rule {
+    match app-id="^foot$"
+    background-effect {
+        blur true
+    }
+}
+
+window-rule {
+    match title="app-launcher"
+    open-floating true
+    default-column-width { proportion 0.5; }
+    default-window-height { fixed 800; }
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+window-rule {
+    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+}

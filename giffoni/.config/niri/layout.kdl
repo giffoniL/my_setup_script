@@ -1,0 +1,54 @@
+layout {
+    gaps 8
+    // center-focused-column "never"
+    // always-center-single-column
+    // background-color "#003300"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width { proportion 1.0; }
+
+    preset-window-heights {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    focus-ring {
+        off
+    }
+
+    border {
+        off
+    }
+
+    shadow {
+        on
+        softness 20
+        spread 6
+        offset x=0 y=12
+        color "#00000060"
+        // draw-behind-window true
+        // inactive-color "#00000054"
+    }
+
+    tab-indicator {
+        off
+    }
+
+    insert-hint {
+        on
+        color "#81d0ff80"
+    }
+
+    struts {
+        // left 64
+        // right 64
+        // top 64
+        // bottom 64
+    }
+}

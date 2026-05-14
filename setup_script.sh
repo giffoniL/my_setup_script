@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
+# prints and logs stdout/stderr
+exec > >(tee output.log) 2>&1
+
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
@@ -23,7 +26,6 @@ error() {
 }
 
 check_deps() {
-
 	local missing=()
 
 	for bin in "$@"; do
@@ -32,7 +34,7 @@ check_deps() {
 		fi
 	done
 
-	if [ ${#missing[@]} -ne 0 ]; then
+	if [[ ${#missing[@]} -ne 0 ]]; then
 		warn "FATAL: The following dependencies are missing:"
 		for item in "${missing[@]}"; do
 			warn "  - $item"
@@ -42,120 +44,115 @@ check_deps() {
 }
 
 install_apps() {
+	BASE_PKGS=(greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace-nerd noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
+	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite fuzzel mako swaybg foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring)
+	APP_PKGS=(zed nicotine+ nautilus vesktop waydroid steam celluloid loupe fragments obsidian)
 
-	BASE_PKGS=(github-cli micro jdk-openjdk otf-monaspace noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl python python-pipx flatpak tree)
-	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite fuzzel mako swaybg foot polkit-gnome)
-	APP_PKGS=(zed nicotine+ vesktop-bin waydroid steam celluloid loupe fragments errands iotas)
-	ALL_PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
-
+	PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
 	PARU_PKGS=(mpd-discord-rpc apple_cursor)
+	FLATPAK_PKGS=(io.github.arijanj.Mimic)
 
 	log "Installing packages..."
-	sudo pacman -Syu --needed "${ALL_PACMAN_PKGS[@]}"
+	sudo pacman -Syu --needed "${PACMAN_PKGS[@]}"
 	paru -S --needed "${PARU_PKGS[@]}"
-
-	log "Installing beets through pipx..."
-	pipx install "beets[fetchart,embedart,lastgenre,scrub,replaygain,info]"
-	pipx ensurepath
-
-	log "Installing Reversal-Blue icon theme..."
-	git clone https://github.com/yeyushengfan258/Reversal-icon-theme.git /tmp/reversal-icons
-	/tmp/reversal-icons/install.sh -t blue
-	rm -rf /tmp/reversal-icons
+	flatpak install -y flathub "${FLATPAK_PKGS[@]}"
+	fish -c 'fisher install pure-fish/pure' # i just use this package...
 
 	log "Finished installing apps."
-
 }
 
 configure_apps() {
 
-	log "Making MPD's log file that it doesn't make by itself for some reason..."
-	mkdir -p "$HOME/.local/state/mpd/"
-	touch "$HOME/.local/state/mpd/log"
-
-	declare -A FILES=(
-		["$SOURCE_DIR/Pictures/Wallpaper/wallpaper.jpg"]="$HOME/Pictures/Wallpaper/wallpaper.jpg"
-		["$SOURCE_DIR/.ncmpcpp/config"]="$HOME/.ncmpcpp/config"
-		["$SOURCE_DIR/.config/foot/foot.ini"]="$HOME/.config/foot/foot.ini"
-		["$SOURCE_DIR/.config/fuzzel/fuzzel.ini"]="$HOME/.config/fuzzel/fuzzel.ini"
-		["$SOURCE_DIR/.config/mako/config"]="$HOME/.config/mako/config"
-		["$SOURCE_DIR/.config/mimeapps.list"]="$HOME/.config/mimeapps.list"
-		["$SOURCE_DIR/.config/mpd/mpd.conf"]="$HOME/.config/mpd/mpd.conf"
-		["$SOURCE_DIR/.config/niri/config.kdl"]="$HOME/.config/niri/config.kdl"
+	SOURCES=(
+		"Pictures/Wallpaper/wallpaper.jpg"
+		".ncmpcpp/config"
+		".config/foot/foot.ini"
+		".config/fuzzel/fuzzel.ini"
+		".config/mako/config"
+		".config/mimeapps.list"
+		".config/mpd/mpd.conf"
+		".config/niri/"
 	)
 
 	log "Setting up dotfiles..."
-	for src in "${!FILES[@]}"; do
-		dest="${FILES[$src]}"
-		dest_dir=$(dirname "$dest")
-
-		mkdir -p "$dest_dir"
-		install -D "$src" "$dest"
-		log "Installed: $dest"
-	done
+	for rel in "${SOURCES[@]}"; do
+        src="$SOURCE_DIR/$rel"
+        dest="$HOME/$rel"
+        if [[ -f "$src" ]]; then
+            install -Dv "$src" "$dest" || { warn "Failed to install $dest"; }
+        elif [[ -d "$src" ]]; then
+            mkdir -p "$dest"
+            cp -rv "$src/." "$dest" || { warn "Failed to copy $dest"; }
+        else
+            warn "Source not found, skipping: $src"
+        fi
+    done
 
 	log "Enabling services..."
 	if systemctl --user list-units >/dev/null 2>&1; then
-		systemctl --user enable --now mako || warn "Failed to enable mako"
-		systemctl --user enable --now mpd || warn "Failed to enable mpd"
-		systemctl --user enable --now mpd-discord-rpc || warn "Failed to enable mpd-discord-rpc"
-		systemctl --user enable --now mpdscribble.service || warn "Failed to enable mpdscribble."
+		USER_SERVICES=(mpd mpd-discord-rpc mpdscribble)
+		SYS_SERVICES=(greetd)
+		for service in "${USER_SERVICES[@]}"; do
+			systemctl --user enable "$service" || warn "Failed to enable $service."
+		done
+		for service in "${SYS_SERVICES[@]}"; do
+			sudo systemctl enable "$service" || warn "Failed to enable $service."
+		done
 	fi
 
-    log "Configuring git..."
+	log "Configuring git..."
 	git config --global color.ui auto
 
 	log "Finished configuring apps."
-
 }
 
 giffoni_related() {
+	while true; do
+		read -p "Are you Giffoni, and is your HD plugged in? (y/n): " yn
+		case $yn in
+		[Yy]*)
 
-    while true; do
-        read -p "Are you Giffoni, and is your HD plugged in? (y/n): " yn
-        case $yn in
-            [Yy]* )
+			log "Configuring git for Giffoni..."
+			git config --global user.name "Giffoni Lopes"
+			git config --global user.email "kgiffoni_@tuta.com"
 
-                log "Configuring git for Giffoni..."
-                git config --global user.name "Giffoni Lopes"
-                git config --global user.email "kgiffoni_@tuta.com"
+			log "Getting external hard drive files..."
+			sudo mount /dev/sda1 /mnt
+			install -Dv /mnt/.mpdscribble/mpdscribble.conf $HOME/.mpdscribble/mpdscribble.conf
+            install -Dv /mnt/beets/config.yaml $HOME/.config/beets/config.yaml
+            cp -rv /mnt/Code $HOME/
+            cp -rv /mnt/Music/. $HOME/Music/
 
-                log "Getting external hard drive files..."
-                mkdir -p $HOME/.mpdscribble/
-                mkdir -p $HOME/.config/beets/
-                sudo mount /dev/sda1 /mnt
-                rsync -avh --progress /mnt/.mpdscribble/mpdscribble.conf $HOME/.mpdscribble/
-                rsync -avh --progress /mnt/beets/config.yaml $HOME/.config/beets/
-                rsync -avh --progress /mnt/Code $HOME/
-                rsync -avh --progress /mnt/Music/* $HOME/Music/
+			log "Unmounting external hard drive..."
+            sudo umount /mnt
 
-                break;;
-            [Nn]* )
-                log "Alrighty then..."
-                break;;
-            * )
-                warn "Please answer yes or no.";;
-        esac
-    done
-
+			break
+			;;
+		[Nn]*)
+			log "Alrighty then..."
+			break
+			;;
+		*)
+			warn "Please answer yes or no."
+			;;
+		esac
+	done
 }
 
 grub_tweaks() {
+	log "Installing grub theme..."
+	git clone https://github.com/harishnkr/bsol.git /tmp/bsol
+	sudo cp -vr /tmp/bsol/bsol /boot/grub/themes/
+	BSOL_THEME="/boot/grub/themes/bsol/theme.txt"
+	sudo sed -i "s|^GRUB_THEME=.*|GRUB_THEME=\"$BSOL_THEME\"|" /etc/default/grub
 
-    log "Installing grub theme..."
-    git clone https://github.com/harishnkr/bsol.git
-    sudo cp -vr ./bsol/bsol /boot/grub/themes/
-    BSOL_THEME="/boot/grub/themes/bsol/theme.txt"
-    sudo sed -i "s|^GRUB_THEME=.*|GRUB_THEME=\"$BSOL_THEME\"|" /etc/default/grub
-
-    log "Applying new grub config..."
+	log "Applying new grub config..."
 	sudo grub-mkconfig -o /boot/grub/grub.cfg
+	rm -rf /tmp/bsol
 
 	log "Finished editing grub."
-
 }
 
-sudo -v
 check_deps pacman paru git awk sudo
 install_apps
 giffoni_related
