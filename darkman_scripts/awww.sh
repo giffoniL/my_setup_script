@@ -1,9 +1,10 @@
 #!/bin/sh
 
-WALLPAPER_LIGHT="$HOME/Pictures/Wallpaper/light"
-WALLPAPER_LIGHT_OVERVIEW="$HOME/Pictures/Wallpaper/overview-light"
-WALLPAPER_DARK="$HOME/Pictures/Wallpaper/dark"
-WALLPAPER_DARK_OVERVIEW="$HOME/Pictures/Wallpaper/overview-dark"
+WALLPAPERS_DIR="$HOME/Pictures/Wallpapers/"
+WALLPAPER_LIGHT="$WALLPAPERS_DIR/light"
+WALLPAPER_LIGHT_OVERVIEW="$WALLPAPERS_DIR/overview-light"
+WALLPAPER_DARK="$WALLPAPERS_DIR/dark"
+WALLPAPER_DARK_OVERVIEW="$WALLPAPERS_DIR/overview-dark"
 
 case "$1" in
   dark)  WALLPAPER="$WALLPAPER_DARK" WALLPAPER_OVERVIEW="$WALLPAPER_DARK_OVERVIEW" ;;
