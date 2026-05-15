@@ -1,6 +1,9 @@
-spawn-sh-at-startup "swaybg -i ~/Pictures/Wallpaper/*"
+spawn-at-startup "awww-daemon" "--no-cache"
+spawn-at-startup "awww-daemon" "--no-cache" "-n" "-overview"
+
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "mako"
+spawn-at-startup "darkman" "run"
 
 spawn-at-startup "vesktop"
 spawn-at-startup "zeditor"
@@ -9,7 +12,7 @@ spawn-at-startup "foot" "ncmpcpp"
 
 spawn-at-startup "niri" "msg" "action" "focus-workspace" "discord"
 
-spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "color-scheme" "prefer-dark"
+//spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "color-scheme" "prefer-dark"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "cursor-size" "40"
 
 prefer-no-csd
@@ -57,7 +60,7 @@ config-notification {
 blur {
     // off
     passes 3
-    offset 5.0
+    offset 6.0
     noise 0.00
     saturation 1.0
 }

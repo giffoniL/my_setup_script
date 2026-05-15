@@ -1,22 +1,14 @@
-#max-history=5
-#sort=-time
-
 on-button-left=invoke-default-action
 on-button-middle=dismiss
 on-button-right=dismiss
 on-touch=dismiss
 on-notify=none
-
 font=Adwaita Sans 12
-background-color=#343437
-text-color=#FFFFFFFF
 width=500
 height=300
 outer-margin=10
 margin=10
 padding=16
-border-size=0
-border-color=#343437BF
 border-radius=12
 progress-color=over #5588AAFF
 icons=1
@@ -32,3 +24,17 @@ ignore-timeout=1
 max-visible=5
 layer=top
 anchor=top-right
+
+[mode=dark]
+border-size=0
+
+background-color=#343437
+text-color=#FFFFFF
+border-color=#343437BF
+
+[mode=light]
+border-size=0
+
+background-color=#48484C
+#text-color=#000006CC
+#border-color=#00000033

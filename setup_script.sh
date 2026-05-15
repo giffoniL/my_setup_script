@@ -45,7 +45,7 @@ check_deps() {
 
 install_apps() {
 	BASE_PKGS=(greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace-nerd noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
-	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite fuzzel mako swaybg foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring)
+	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite wl-clipboard fuzzel mako swaybg foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring darkman)
 	APP_PKGS=(zed nicotine+ nautilus vesktop waydroid steam celluloid loupe fragments obsidian)
 
 	PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
@@ -64,7 +64,7 @@ install_apps() {
 configure_apps() {
 
 	SOURCES=(
-		"Pictures/Wallpaper/wallpaper.jpg"
+		"Pictures/Wallpapers/"
 		".ncmpcpp/config"
 		".config/foot/foot.ini"
 		".config/fuzzel/fuzzel.ini"
@@ -101,7 +101,16 @@ configure_apps() {
 	fi
 
 	# i prefer it this way tbh
-	sudo echo "\S (\l)" > /etc/issue
+	log "Adding greeting ASCII..."
+	sudo cp -v login_greet.txt /etc/issue
+
+	log "Configuring plymouth to default..."
+	sudo plymouth-set-default-theme -Rr
+
+	log "Setting up needed darkman scripts..."
+	sudo rm -rf /usr/share/darkman/examples
+	sudo install -D darkman_scripts/* /usr/share/darkman/
+	sudo chmod +x /usr/share/darkman/*
 
 	log "Configuring git..."
 	git config --global color.ui auto
