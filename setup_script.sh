@@ -71,6 +71,7 @@ configure_apps() {
 		".config/mako/config"
 		".config/mimeapps.list"
 		".config/mpd/mpd.conf"
+		".config/xdg-desktop-portal/portals.conf"
 		".config/niri/"
 	)
 
