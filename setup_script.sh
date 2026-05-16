@@ -1,7 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# prints and logs stdout/stderr
 exec > >(tee output.log) 2>&1
 
 GREEN='\033[0;32m'
@@ -9,19 +8,16 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SOURCE_DIR="$SCRIPT_DIR/giffoni"
-
 log() {
-	echo -e "${GREEN}[INFO] $1${NC}"
+	echo -e "${GREEN}[INFO]: $1${NC}"
 }
 
 warn() {
-	echo -e "${YELLOW}[WARN] $1${NC}"
+	echo -e "${YELLOW}[WARNING]: $1${NC}"
 }
 
 error() {
-	echo -e "${RED}[ERROR] $1${NC}"
+	echo -e "${RED}[ERROR]: $1${NC}"
 	exit 1
 }
 
@@ -44,8 +40,8 @@ check_deps() {
 }
 
 install_apps() {
-	BASE_PKGS=(greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace-nerd noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
-	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite wl-clipboard fuzzel mako swaybg foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring darkman awww)
+	BASE_PKGS=(greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace-nerd noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc rmpc mpdscribble brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
+	DESKTOP_PKGS=(wayland niri xorg xwayland-satellite wl-clipboard fuzzel mako foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring awww)
 	APP_PKGS=(zed nicotine+ nautilus vesktop waydroid steam celluloid loupe fragments obsidian)
 
 	PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
@@ -64,21 +60,18 @@ install_apps() {
 configure_apps() {
 
 	SOURCES=(
-		"Pictures/Wallpapers/"
-		".ncmpcpp/config"
-		".config/foot/foot.ini"
-		".config/fuzzel/fuzzel.ini"
-		".config/mako/config"
-		".config/mimeapps.list"
-		".config/mpd/mpd.conf"
-		".config/xdg-desktop-portal/portals.conf"
-		".config/niri/"
+		"giffoni/Pictures/Wallpapers/"
+		"giffoni/.config/niri/"
+		"giffoni/.config/foot/foot.ini"
+		"giffoni/.config/fuzzel/fuzzel.ini"
+		"giffoni/.config/mako/config"
+		"giffoni/.config/mpd/mpd.conf"
+		"giffoni/.config/rmpc/config.ron"
 	)
 
 	log "Setting up dotfiles..."
-	for rel in "${SOURCES[@]}"; do
-        src="$SOURCE_DIR/$rel"
-        dest="$HOME/$rel"
+	for src in "${SOURCES[@]}"; do
+        dest="$HOME/$src"
         if [[ -f "$src" ]]; then
             install -Dv "$src" "$dest" || { warn "Failed to install $dest"; }
         elif [[ -d "$src" ]]; then
@@ -88,6 +81,11 @@ configure_apps() {
             warn "Source not found, skipping: $src"
         fi
     done
+
+	# sys sources here, i should probably clean this up later if more are ever needed
+	log "Setting up system config files..."
+	sudo cp -vr sys_configs/greetd_config.toml /etc/greetd/config.toml
+	
 
 	log "Enabling services..."
 	if systemctl --user list-units >/dev/null 2>&1; then
@@ -101,17 +99,8 @@ configure_apps() {
 		done
 	fi
 
-	# i prefer it this way tbh
-	log "Adding greeting ASCII..."
+	log "Adding ASCII greeting..."
 	sudo cp -v login_greet.txt /etc/issue
-
-	log "Configuring plymouth to default..."
-	sudo plymouth-set-default-theme -Rr
-
-	log "Setting up needed darkman scripts..."
-	sudo rm -rf /usr/share/darkman/examples
-	sudo install -D darkman_scripts/* /usr/share/darkman/
-	sudo chmod +x /usr/share/darkman/*
 
 	log "Configuring git..."
 	git config --global color.ui auto
