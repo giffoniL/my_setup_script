@@ -60,26 +60,26 @@ install_apps() {
 configure_apps() {
 
 	SOURCES=(
-		"giffoni/Pictures/Wallpapers/"
-		"giffoni/.config/niri/"
-		"giffoni/.config/foot/foot.ini"
-		"giffoni/.config/fuzzel/fuzzel.ini"
-		"giffoni/.config/mako/config"
-		"giffoni/.config/mpd/mpd.conf"
-		"giffoni/.config/rmpc/config.ron"
+		"Pictures/Wallpapers/"
+		".config/niri/"
+		".config/foot/foot.ini"
+		".config/fuzzel/fuzzel.ini"
+		".config/mako/config"
+		".config/mpd/mpd.conf"
+		".config/rmpc/config.ron"
 	)
 
 	log "Setting up dotfiles..."
 	for src in "${SOURCES[@]}"; do
-        dest="$HOME/$src"
-        if [[ -f "$src" ]]; then
-            install -Dv "$src" "$dest" || { warn "Failed to install $dest"; }
-        elif [[ -d "$src" ]]; then
-            mkdir -p "$dest"
-            cp -rv "$src/." "$dest" || { warn "Failed to copy $dest"; }
-        else
-            warn "Source not found, skipping: $src"
-        fi
+        dest="$HOME/${src}"
+		if [[ -f "giffoni/${src}" ]]; then
+		    install -Dv "giffoni/${src}" "$dest" || { warn "Failed to install $dest"; }
+		elif [[ -d "giffoni/${src}" ]]; then
+		    mkdir -p "$dest"
+		    cp -rv "giffoni/${src}/." "$dest" || { warn "Failed to copy $dest"; }
+		else
+		    warn "Source not found, skipping: $src"
+		fi
     done
 
 	# sys sources here, i should probably clean this up later if more are ever needed
