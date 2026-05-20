@@ -1,7 +1,12 @@
+//spawn-at-startup "awww-daemon" "--no-cache"
+//spawn-at-startup "awww-daemon" "--no-cache" "-n" "-overview"
+//spawn-sh-at-startup "awww img ~/Pictures/Wallpapers/wp.* -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94'"
+//spawn-sh-at-startup "awww img ~/Pictures/Wallpapers/wp-overview.* -n=-overview -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94'"
+
 spawn-at-startup "awww-daemon" "--no-cache"
 spawn-at-startup "awww-daemon" "--no-cache" "-n" "-overview"
-spawn-sh-at-startup "awww img ~/Pictures/Wallpapers/wp.* -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94'"
-spawn-sh-at-startup "awww img ~/Pictures/Wallpapers/wp-overview.* -n=-overview -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94'"
+spawn-sh-at-startup "while ! awww img ~/Pictures/Wallpapers/wp.* -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94' 2>/dev/null; do sleep 0.1; done"
+spawn-sh-at-startup "while ! awww img ~/Pictures/Wallpapers/wp-overview.* -n=-overview -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94' 2>/dev/null; do sleep 0.1; done"
 
 spawn-at-startup "mako"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
@@ -21,6 +26,10 @@ prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 environment {
+	ELECTRON_OZONE_PLATFORM_HINT "wayland"
+//	QT_QPA_PLATFORM "wayland"
+//	QT_SELECT "6"
+	QT_QPA_PLATFORMTHEME "qt6ct:qt5ct"
 }
 
 cursor {
