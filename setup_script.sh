@@ -59,6 +59,10 @@ install_apps() {
 
 configure_apps() {
 
+	# gotta make these folders because mpd doesn't like doing them itself for some reason
+	mkdir -p $HOME/.local/share/mpd/playlists
+	mkdir -p $HOME/.local/state/mpd
+
 	SOURCES=(
 		"Pictures/Wallpapers/"
 		".config/niri/"
