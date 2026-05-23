@@ -26,6 +26,18 @@
       "outputColor": "white",
     },
     {
+      "type": "kernel",
+      "key": "┣━ ",
+      "keyColor": "white",
+      "outputColor": "white",
+    },
+    {
+      "type": "os",
+      "key": "┣━ {icon}",
+      "keyColor": "white",
+      "outputColor": "white",
+    },
+    {
       "type": "cpu",
       "key": "┣━ 󰻠",
       "keyColor": "white",
@@ -62,6 +74,12 @@
       "outputColor": "white",
     },
     {
+      "type": "packages",
+      "key": "┣━ 󰏖",
+      "keyColor": "white",
+      "outputColor": "white",
+    },
+    {
       "type": "shell",
       "key": "┣━ ",
       "keyColor": "white",
@@ -70,24 +88,6 @@
     {
       "type": "wm",
       "key": "┣━ ",
-      "keyColor": "white",
-      "outputColor": "white",
-    },
-    {
-      "type": "os",
-      "key": "┣━ {icon}",
-      "keyColor": "white",
-      "outputColor": "white",
-    },
-    {
-      "type": "kernel",
-      "key": "┣━ ",
-      "keyColor": "white",
-      "outputColor": "white",
-    },
-    {
-      "type": "packages",
-      "key": "┣━ 󰏖",
       "keyColor": "white",
       "outputColor": "white",
     },
@@ -101,3 +101,5 @@
     "colors",
   ],
 }
+
+
