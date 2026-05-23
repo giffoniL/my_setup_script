@@ -1,0 +1,285 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+
+(
+    // --------------------------------------------------
+    // General
+    // --------------------------------------------------
+    default_album_art_path: Some("/home/giffoni/.config/rmpc/default_cover.png"),
+    draw_borders: false,
+    show_song_table_header: false,
+
+    symbols: (
+        song: "󰝚 ",
+        dir: "󱍙 ",
+        playlist: "󰲸 ",
+        marker: "* ",
+        ellipsis: "...",
+    ),
+
+    // --------------------------------------------------
+    // Layout
+    // --------------------------------------------------
+    layout: Split(
+        direction: Vertical,
+        panes: [
+            (size: "1",    pane: Pane(Header)),
+            (size: "100%", pane: Pane(TabContent)),
+            (size: "1",    pane: Pane(ProgressBar)),
+        ],
+    ),
+
+    // --------------------------------------------------
+    // Progress Bar
+    // --------------------------------------------------
+    progress_bar: (
+        symbols: ["=", "=", ">", "", ""],
+
+        track_style: (
+            fg: "black",
+        ),
+
+        elapsed_style: (
+            fg: "green",
+        ),
+
+        thumb_style: (
+            fg: "green",
+        ),
+    ),
+
+    // --------------------------------------------------
+    // Visualizer (CAVA)
+    // --------------------------------------------------
+    cava: (
+        bar_symbols: [
+            '▁', '▂', '▃', '▄',
+            '▅', '▆', '▇', '█',
+        ],
+
+        inverted_bar_symbols: [
+            '▔', '🮂', '🮃', '▀',
+            '🮄', '🮅', '🮆', '█',
+        ],
+
+        bar_width: 1,
+        bar_spacing: 1,
+
+        bar_color: Single("red"),
+        orientation: Horizontal,
+    ),
+
+    // --------------------------------------------------
+    // Scrollbar
+    // --------------------------------------------------
+    scrollbar: (
+        symbols: ["┃", "▓", "▲", "▼"],
+        track_style: (fg: "white"),
+        ends_style: (fg: "white"),
+        thumb_style: (fg: "white"),
+    ),
+
+    // --------------------------------------------------
+    // Browser
+    // --------------------------------------------------
+    browser_column_widths: [20, 38, 42],
+
+    // --------------------------------------------------
+    // Song Table
+    // --------------------------------------------------
+    song_table_format: [
+        // Artist
+        (
+            prop: (
+                kind: Property(Artist),
+                style: (fg: "yellow"),
+
+                default: (
+                    kind: Text("Unknown"),
+                    style: (fg: "yellow"),
+                ),
+            ),
+
+            label_prop: (
+                kind: Group([
+                    (kind: Text("Artist"), style: (fg: "yellow")),
+                    (kind: Text("  "),   style: (fg: "yellow")),
+                ]),
+            ),
+
+            width: "20%",
+        ),
+
+        // Title
+        (
+            prop: (
+                kind: Property(Title),
+                style: (fg: "white"),
+
+                default: (
+                    kind: Text("Unknown"),
+                    style: (fg: "white"),
+                ),
+            ),
+
+            label_prop: (
+                kind: Group([
+                    (kind: Text("Title"), style: (fg: "yellow")),
+                    (kind: Text("  "),  style: (fg: "yellow")),
+                ]),
+            ),
+
+            width: "35%",
+        ),
+
+        // Album
+        (
+            prop: (
+                kind: Property(Album),
+                style: (fg: "cyan"),
+
+                default: (
+                    kind: Text("Unknown"),
+                    style: (fg: "cyan"),
+                ),
+            ),
+
+            label_prop: (
+                kind: Group([
+                    (kind: Text("Album"), style: (fg: "yellow")),
+                    (kind: Text(" 󰀥 "), style: (fg: "yellow")),
+                ]),
+            ),
+
+            width: "30%",
+        ),
+
+        // Duration
+        (
+            prop: (
+                kind: Property(Duration),
+                style: (fg: "magenta"),
+
+                default: (
+                    kind: Text("-"),
+                    style: (fg: "magenta"),
+                ),
+            ),
+
+            label_prop: (
+                kind: Group([
+                    (kind: Text("Length"), style: (fg: "yellow")),
+                    (kind: Text("  "),    style: (fg: "yellow")),
+                ]),
+            ),
+
+            width: "15%",
+            alignment: Right,
+        ),
+    ],
+
+    // --------------------------------------------------
+    // Header
+    // --------------------------------------------------
+    header: (
+        rows: [
+            (
+                // Left
+                left: [
+                    (
+                        kind: Text("["),
+                        style: (
+                            fg: "yellow",
+                            modifiers: "Bold",
+                        ),
+                    ),
+
+                    (
+                        kind: Property(Status(State)),
+                        style: (
+                            fg: "yellow",
+                            modifiers: "Bold",
+                        ),
+                    ),
+
+                    (
+                        kind: Text("]"),
+                        style: (
+                            fg: "yellow",
+                            modifiers: "Bold",
+                        ),
+                    ),
+                ],
+
+                // Center
+                center: [
+                    (
+                        kind: Property(Song(Artist)),
+
+                        style: (
+                            fg: "red",
+                            modifiers: "Bold",
+                        ),
+
+                        default: (
+                            kind: Text("Unknown"),
+
+                            style: (
+                                fg: "red",
+                                modifiers: "Bold",
+                            ),
+                        ),
+                    ),
+
+                    (kind: Text(" - ")),
+
+                    (
+                        kind: Property(Song(Title)),
+
+                        style: (
+                            fg: "red",
+                            modifiers: "Bold",
+                        ),
+
+                        default: (
+                            kind: Text("No Song"),
+
+                            style: (
+                                fg: "red",
+                                modifiers: "Bold",
+                            ),
+                        ),
+                    ),
+                ],
+
+                // Right
+                right: [
+                    (
+                        kind: Text("Vol: "),
+                        style: (
+                            fg: "yellow",
+                            modifiers: "Bold",
+                        ),
+                    ),
+
+                    (
+                        kind: Property(Status(Volume)),
+                        style: (
+                            fg: "yellow",
+                            modifiers: "Bold",
+                        ),
+                    ),
+
+                    (
+                        kind: Text("% "),
+                        style: (
+                            fg: "yellow",
+                            modifiers: "Bold",
+                        ),
+                    ),
+                ],
+            ),
+        ],
+    ),
+)

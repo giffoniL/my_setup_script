@@ -66,11 +66,11 @@ configure_apps() {
 	SOURCES=(
 		"Pictures/Wallpapers/"
 		".config/niri/"
+		".config/rmpc/"
 		".config/foot/foot.ini"
 		".config/fuzzel/fuzzel.ini"
 		".config/mako/config"
 		".config/mpd/mpd.conf"
-		".config/rmpc/config.ron"
 	)
 
 	log "Setting up dotfiles..."
