@@ -1,0 +1,20 @@
+directory: ~/Music/Sorted
+library: ~/.config/beets/musiclibrary.db
+per_disc_numbering: yes
+import:
+    move: yes
+    timid: yes
+    log: ~/.config/beets/log.txt
+    bell: yes
+paths:
+    default: $albumartist/$album%aunique{}/$disc-$track - $title
+    singleton: Looses/$artist/$disc-$track - $title
+    comp: Compilations/$album%aunique{}/$disc-$track - $title
+    
+plugins: musicbrainz fetchart embedart scrub lyrics info
+
+lyrics:
+    fallback: ''
+    force: yes
+    print: yes
+    sources: [lrclib]

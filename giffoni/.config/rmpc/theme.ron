@@ -7,14 +7,14 @@
     // General
     // --------------------------------------------------
     default_album_art_path: Some("/home/giffoni/.config/rmpc/default_cover.png"),
-    draw_borders: false,
+    draw_borders:           false,
     show_song_table_header: false,
 
     symbols: (
-        song: "󰝚 ",
-        dir: "󱍙 ",
+        song:     "󰝚 ",
+        dir:      "󱍙 ",
         playlist: "󰲸 ",
-        marker: "* ",
+        marker:   "* ",
         ellipsis: "...",
     ),
 
@@ -24,7 +24,7 @@
     layout: Split(
         direction: Vertical,
         panes: [
-            (size: "1",    pane: Pane(Header)),
+            (size: "1",    pane: Component("header")),
             (size: "100%", pane: Pane(TabContent)),
             (size: "1",    pane: Pane(ProgressBar)),
         ],
@@ -34,49 +34,35 @@
     // Progress Bar
     // --------------------------------------------------
     progress_bar: (
-        symbols: ["=", "=", ">", "", ""],
-
-        track_style: (
-            fg: "black",
-        ),
-
-        elapsed_style: (
-            fg: "green",
-        ),
-
-        thumb_style: (
-            fg: "green",
-        ),
+        symbols: ["=", "=", ">", "=", "="],
+        track_style:   (fg: "black", modifiers: "Bold"),
+        elapsed_style: (fg: "blue", modifiers: "Bold"),
+        thumb_style:   (fg: "blue", modifiers: "Bold"),
     ),
 
     // --------------------------------------------------
     // Visualizer (CAVA)
     // --------------------------------------------------
     cava: (
-        bar_symbols: [
-            '▁', '▂', '▃', '▄',
-            '▅', '▆', '▇', '█',
-        ],
+        bar_symbols: ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'],
+        inverted_bar_symbols: ['▔', '🮂', '🮃', '▀', '🮄', '🮅', '🮆', '█'],
 
-        inverted_bar_symbols: [
-            '▔', '🮂', '🮃', '▀',
-            '🮄', '🮅', '🮆', '█',
-        ],
+        bar_width: 1, // width of a single bar in columns
+        bar_spacing: 1, // free space between bars in columns
 
-        bar_width: 1,
-        bar_spacing: 1,
+        orientation: Bottom,
 
         bar_color: Single("red"),
-        orientation: Horizontal,
+
     ),
 
     // --------------------------------------------------
     // Scrollbar
     // --------------------------------------------------
     scrollbar: (
-        symbols: ["┃", "▓", "▲", "▼"],
+        symbols:     ["┃", "▓", "▲", "▼"],
         track_style: (fg: "white"),
-        ends_style: (fg: "white"),
+        ends_style:  (fg: "white"),
         thumb_style: (fg: "white"),
     ),
 
@@ -94,20 +80,17 @@
             prop: (
                 kind: Property(Artist),
                 style: (fg: "yellow"),
-
                 default: (
-                    kind: Text("Unknown"),
+                    kind:  Text("Unknown"),
                     style: (fg: "yellow"),
                 ),
             ),
-
             label_prop: (
                 kind: Group([
                     (kind: Text("Artist"), style: (fg: "yellow")),
-                    (kind: Text("  "),   style: (fg: "yellow")),
+                    (kind: Text("  "), style: (fg: "yellow")),
                 ]),
             ),
-
             width: "20%",
         ),
 
@@ -116,20 +99,17 @@
             prop: (
                 kind: Property(Title),
                 style: (fg: "white"),
-
                 default: (
-                    kind: Text("Unknown"),
+                    kind:  Text("Unknown"),
                     style: (fg: "white"),
                 ),
             ),
-
             label_prop: (
                 kind: Group([
                     (kind: Text("Title"), style: (fg: "yellow")),
-                    (kind: Text("  "),  style: (fg: "yellow")),
+                    (kind: Text(" 󰸪 "),    style: (fg: "yellow")),
                 ]),
             ),
-
             width: "35%",
         ),
 
@@ -138,20 +118,17 @@
             prop: (
                 kind: Property(Album),
                 style: (fg: "cyan"),
-
                 default: (
-                    kind: Text("Unknown"),
+                    kind:  Text("Unknown"),
                     style: (fg: "cyan"),
                 ),
             ),
-
             label_prop: (
                 kind: Group([
                     (kind: Text("Album"), style: (fg: "yellow")),
-                    (kind: Text(" 󰀥 "), style: (fg: "yellow")),
+                    (kind: Text("  "),   style: (fg: "yellow")),
                 ]),
             ),
-
             width: "30%",
         ),
 
@@ -160,126 +137,105 @@
             prop: (
                 kind: Property(Duration),
                 style: (fg: "magenta"),
-
                 default: (
-                    kind: Text("-"),
+                    kind:  Text("-"),
                     style: (fg: "magenta"),
                 ),
             ),
-
             label_prop: (
                 kind: Group([
                     (kind: Text("Length"), style: (fg: "yellow")),
-                    (kind: Text("  "),    style: (fg: "yellow")),
+                    (kind: Text(" 󰔛 "),     style: (fg: "yellow")),
                 ]),
             ),
-
-            width: "15%",
+            width:     "15%",
             alignment: Right,
         ),
     ],
 
     // --------------------------------------------------
-    // Header
+    // Components
     // --------------------------------------------------
-    header: (
-        rows: [
-            (
-                // Left
-                left: [
-                    (
-                        kind: Text("["),
-                        style: (
-                            fg: "yellow",
-                            modifiers: "Bold",
-                        ),
-                    ),
+    components: {
+        "header": Split(
+            direction: Horizontal,
+            panes: [
+                (size: "22%", pane: Component("header_element_1")),
+                (size: "1",   pane: Component("header_element_space")),
+                (size: "56%", pane: Component("header_element_2")),
+                (size: "1",   pane: Component("header_element_space")),
+                (size: "22%", pane: Component("header_element_3")),
+            ],
+        ),
 
-                    (
-                        kind: Property(Status(State)),
-                        style: (
-                            fg: "yellow",
-                            modifiers: "Bold",
-                        ),
-                    ),
+        "header_element_1": Split(
+            direction: Horizontal,
+            panes: [
+               (size: "100%", pane: Pane(Property(content: [
+                               (kind: Text("[ "),style: (fg: "yellow", modifiers: "Bold")),
+                               (kind: Property(Status(Elapsed)),style: (fg: "white")),
+                               (kind: Text(" / "),style: (fg: "yellow", modifiers: "Bold")),
+                               (kind: Property(Status(Duration)),style: (fg: "white")),
+                               (kind: Text(" 󱦟"),style: (fg: "yellow", modifiers: "Bold")),
+                               (kind: Text(" ]"),style: (fg: "yellow", modifiers: "Bold")),
+                           ], align: Left))
+               ),
+            ]
+        ),
 
-                    (
-                        kind: Text("]"),
-                        style: (
-                            fg: "yellow",
-                            modifiers: "Bold",
-                        ),
-                    ),
-                ],
+        "header_element_2": Split(
+            direction: Horizontal,
+            panes: [
+                (size: "100%", pane:
+                    Pane(Property(
+            content: [
+                (kind: Property(Song(Artist)), style: (fg: "yellow", modifiers: "Bold"),
+                    default: (kind: Text("Unknown"), style: (fg: "yellow", modifiers: "Bold"))),
+                (kind: Text(" - ")),
+                (kind: Property(Song(Title)), default: (kind: Text("Unknown"))),
+            ], align: Center, scroll_speed: 1
+        )),
+                ),
+            ]
+        ),
 
-                // Center
-                center: [
-                    (
-                        kind: Property(Song(Artist)),
+        "header_element_3": Split(
+            direction: Horizontal,
+            panes: [
+                (size: "1", pane: Pane(Property(content: [(kind: Text(""))]))),
 
-                        style: (
-                            fg: "red",
-                            modifiers: "Bold",
-                        ),
 
-                        default: (
-                            kind: Text("Unknown"),
+                (size: "100%", pane: Pane(
+                Volume(
+                    kind: Slider(
+                        symbols: (
+                            start: "[",
+                            filled: "=",
+                            thumb: "█",
+                            track: "=",
+                            end: "]",
+                ),
+                track_style: (fg: "black", modifiers: "Bold"),
+                filled_style: (fg: "yellow", modifiers: "Bold"),
+                thumb_style: (fg: "yellow", modifiers: "Bold"),
+                )))),
 
-                            style: (
-                                fg: "red",
-                                modifiers: "Bold",
-                            ),
-                        ),
-                    ),
 
-                    (kind: Text(" - ")),
+//                (size: "4", pane: Pane(Property(content: [(kind: Property(Status(Volume)), style: (fg: "white"))], align: Right))),
+//                (size: "2", pane: Pane(Property(content: [(kind: Text("%"), style: (fg: "white"))]))),
+            ]
+        ),
 
-                    (
-                        kind: Property(Song(Title)),
-
-                        style: (
-                            fg: "red",
-                            modifiers: "Bold",
-                        ),
-
-                        default: (
-                            kind: Text("No Song"),
-
-                            style: (
-                                fg: "red",
-                                modifiers: "Bold",
-                            ),
-                        ),
-                    ),
-                ],
-
-                // Right
-                right: [
-                    (
-                        kind: Text("Vol: "),
-                        style: (
-                            fg: "yellow",
-                            modifiers: "Bold",
-                        ),
-                    ),
-
-                    (
-                        kind: Property(Status(Volume)),
-                        style: (
-                            fg: "yellow",
-                            modifiers: "Bold",
-                        ),
-                    ),
-
-                    (
-                        kind: Text("% "),
-                        style: (
-                            fg: "yellow",
-                            modifiers: "Bold",
-                        ),
-                    ),
-                ],
-            ),
-        ],
-    ),
+        "header_element_space": Split(
+            direction: Horizontal,
+            panes: [
+                (size: "100%", pane: Pane(Property(
+                    content: [
+                        (kind: Text(" ")),
+                    ],
+                    align: Right,
+                ))),
+            ],
+        ),
+    },
 )

@@ -21,6 +21,29 @@ error() {
     exit 1
 }
 
+install_dotfile() {
+    local src="$1"
+    local dest="$2"
+
+    [[ ! -d "$src" ]] && {
+        error "Source must be a directory."
+    }
+    [[ "$src" -ef "$dest" ]] && {
+        error "Source and destination must differ."
+    }
+
+    mkdir -p "$dest"
+
+    # current dots are backuped
+    for file in "$dest"/*; do
+        local backup="${file}.bak.$(date +%Y%m%d%H%M%S)"
+        log "Backing up $file -> $backup"
+        mv "$file" "$backup"
+    done
+
+    cp -vr "$src/." "$dest"
+}
+
 check_deps() {
     local missing=()
 
@@ -40,9 +63,9 @@ check_deps() {
 }
 
 install_apps() {
-    BASE_PKGS=(git rsync nano fastfetch greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace-nerd noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc rmpc mpdscribble brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
-    DESKTOP_PKGS=(wayland niri xorg xwayland-satellite wl-clipboard fuzzel mako foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring awww seahorse)
-    APP_PKGS=(zed nicotine+ nautilus vesktop gimp waydroid steam celluloid loupe fragments obsidian)
+    BASE_PKGS=(git rsync nano fastfetch greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace ttf-material-symbols-variable noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc rmpc mpdscribble brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
+    DESKTOP_PKGS=(wayland niri xorg xwayland-satellite wl-clipboard fuzzel mako foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring awww swayidle)
+    APP_PKGS=(zed nicotine+ nautilus vesktop gimp steam celluloid loupe fragments obsidian seahorse gaphor solanum)
 
     PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
     PARU_PKGS=(mpd-discord-rpc)
@@ -58,60 +81,50 @@ install_apps() {
 }
 
 configure_apps() {
+    # mpd doesn't create these itself
+    mkdir -p "$HOME/.local/share/mpd/playlists"
+    mkdir -p "$HOME/.local/state/mpd"
 
-    # gotta make these folders because mpd doesn't like doing them itself for some reason
-    mkdir -p $HOME/.local/share/mpd/playlists
-    mkdir -p $HOME/.local/state/mpd
-
-    SOURCES=(
+    local SOURCES=(
         "Pictures/Wallpapers/"
         ".config/niri/"
         ".config/rmpc/"
         ".config/fastfetch/"
-        ".config/foot/foot.ini"
-        ".config/fuzzel/fuzzel.ini"
-        ".config/mako/config"
-        ".config/mpd/mpd.conf"
+        ".config/foot/"
+        ".config/fuzzel/"
+        ".config/mako/"
+        ".config/mpd/"
+        ".config/beets/"
     )
 
     log "Setting up dotfiles..."
     for src in "${SOURCES[@]}"; do
-        dest="$HOME/${src}"
-        if [[ -f "giffoni/${src}" ]]; then
-            install -Dv "giffoni/${src}" "$dest" || { warn "Failed to install $dest"; }
-        elif [[ -d "giffoni/${src}" ]]; then
-            mkdir -p "$dest"
-            cp -rv "giffoni/${src}/." "$dest" || { warn "Failed to copy $dest"; }
+        if [[ -d "giffoni/${src}" ]]; then
+            install_dotfile "giffoni/${src}" "$HOME/${src}"
         else
             warn "Source not found, skipping: $src"
         fi
     done
 
-    # sys sources here, i should probably clean this up later if more are ever needed
     log "Setting up system config files..."
     sudo cp -vr sys_configs/greetd_config.toml /etc/greetd/config.toml
 
     log "Enabling services..."
-    if systemctl --user list-units >/dev/null 2>&1; then
-        USER_SERVICES=(mpd mpd-discord-rpc mpdscribble)
-        SYS_SERVICES=(greetd)
-        for service in "${USER_SERVICES[@]}"; do
-            systemctl --user enable "$service" || warn "Failed to enable $service."
-        done
-        for service in "${SYS_SERVICES[@]}"; do
-            sudo systemctl enable "$service" || warn "Failed to enable $service."
-        done
-    fi
+    local USER_SERVICES=(mpd mpd-discord-rpc mpdscribble)
+    local SYS_SERVICES=(greetd)
+    for service in "${USER_SERVICES[@]}"; do
+        systemctl --user enable "$service" || warn "Failed to enable $service."
+    done
+    for service in "${SYS_SERVICES[@]}"; do
+        sudo systemctl enable "$service" || warn "Failed to enable $service."
+    done
 
     log "Adding ASCII greeting..."
-    sudo cp -v login_greet.txt /etc/issue
-
+    sudo cp -vr sys_configs/login_greet.txt /etc/issue/
     log "Configuring git..."
     git config --global color.ui auto
-
     log "Changing user shell to fish..."
     chsh -s /bin/fish
-
     log "Finished configuring apps."
 }
 
@@ -127,10 +140,9 @@ giffoni_related() {
 
             log "Getting external hard drive files..."
             sudo mount /dev/sda1 /mnt
-            install -Dv /mnt/.mpdscribble/mpdscribble.conf $HOME/.mpdscribble/mpdscribble.conf
-            install -Dv /mnt/beets/config.yaml $HOME/.config/beets/config.yaml
-            cp -rv /mnt/Code $HOME/
-            cp -rv /mnt/Music/. $HOME/Music/
+            install_dotfile /mnt/.mpdscribble/ $HOME/.mpdscribble/
+            rsync -av --delete --progress /mnt/Music/ $HOME/Music/
+            rsync -av --delete --progress /mnt/Code $HOME/
 
             log "Unmounting external hard drive..."
             sudo umount /mnt
@@ -151,7 +163,7 @@ giffoni_related() {
 grub_tweaks() {
     log "Tweaking grub config..."
 
-    # find a line that starts with GRUB_CMDLINE_LINUX_DEFAULT, if it has the word "splash", remove it
+    # find a line that starts with GRUB_CMDLINE_LINUX_DEFAULT, if it has the word "splash", removes that word
     sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=.*splash/{
       s/ splash//
       s/splash //
@@ -169,8 +181,8 @@ grub_tweaks() {
 
 check_deps pacman paru git awk sudo
 install_apps
-giffoni_related
 configure_apps
 grub_tweaks
+giffoni_related
 
 log "All done. Restart and enjoy."

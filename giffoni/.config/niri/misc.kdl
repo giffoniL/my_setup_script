@@ -1,8 +1,3 @@
-//spawn-at-startup "awww-daemon" "--no-cache"
-//spawn-at-startup "awww-daemon" "--no-cache" "-n" "-overview"
-//spawn-sh-at-startup "awww img ~/Pictures/Wallpapers/wp.* -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94'"
-//spawn-sh-at-startup "awww img ~/Pictures/Wallpapers/wp-overview.* -n=-overview -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94'"
-
 spawn-at-startup "awww-daemon" "--no-cache"
 spawn-at-startup "awww-daemon" "--no-cache" "-n" "-overview"
 spawn-sh-at-startup "while ! awww img ~/Pictures/Wallpapers/wp.* -t fade --transition-fps 60 --transition-bezier '0.25,0.46,0.45,0.94' 2>/dev/null; do sleep 0.1; done"
@@ -12,7 +7,7 @@ spawn-at-startup "mako"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 
 spawn-at-startup "vesktop"
-//spawn-at-startup "zeditor"
+spawn-at-startup "zeditor"
 spawn-at-startup "firefox"
 spawn-at-startup "foot" "rmpc"
 
@@ -20,6 +15,8 @@ spawn-at-startup "niri" "msg" "action" "focus-workspace" "discord"
 
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "color-scheme" "prefer-dark"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "cursor-size" "40"
+
+spawn-sh-at-startup "swayidle -w timeout 300 'niri msg action power-off-monitors'"
 
 prefer-no-csd
 
@@ -29,7 +26,7 @@ environment {
 	ELECTRON_OZONE_PLATFORM_HINT "wayland"
 //	QT_QPA_PLATFORM "wayland"
 //	QT_SELECT "6"
-	QT_QPA_PLATFORMTHEME "qt6ct:qt5ct"
+//	QT_QPA_PLATFORMTHEME "qt6ct:qt5ct"
 }
 
 cursor {
