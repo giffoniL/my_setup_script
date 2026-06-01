@@ -35,7 +35,7 @@ install_dotfile() {
     mkdir -p "$dest"
 
     # current dots are backuped
-    for file in "$dest"/*; do
+    for file in "$dest"; do
         local backup="${file}.bak.$(date +%Y%m%d%H%M%S)"
         log "Backing up $file -> $backup"
         mv "$file" "$backup"
@@ -54,7 +54,7 @@ check_deps() {
     done
 
     if [[ ${#missing[@]} -ne 0 ]]; then
-        warn "FATAL: The following dependencies are missing:"
+        warn "The following dependencies are missing:"
         for item in "${missing[@]}"; do
             warn "  - $item"
         done
@@ -86,15 +86,15 @@ configure_apps() {
     mkdir -p "$HOME/.local/state/mpd"
 
     local SOURCES=(
-        "Pictures/Wallpapers/"
-        ".config/niri/"
-        ".config/rmpc/"
-        ".config/fastfetch/"
-        ".config/foot/"
-        ".config/fuzzel/"
-        ".config/mako/"
-        ".config/mpd/"
-        ".config/beets/"
+        "Pictures/Wallpapers"
+        ".config/niri"
+        ".config/rmpc"
+        ".config/fastfetch"
+        ".config/foot"
+        ".config/fuzzel"
+        ".config/mako"
+        ".config/mpd"
+        ".config/beets"
     )
 
     log "Setting up dotfiles..."
@@ -120,7 +120,7 @@ configure_apps() {
     done
 
     log "Adding ASCII greeting..."
-    sudo cp -vr sys_configs/login_greet.txt /etc/issue/
+    sudo cp -vr sys_configs/login_greet.txt /etc/issue
     log "Configuring git..."
     git config --global color.ui auto
     log "Changing user shell to fish..."
