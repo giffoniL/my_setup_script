@@ -21,6 +21,7 @@ error() {
     exit 1
 }
 
+# UNDER NO CIRCUMSTANCE PUT A TRAILING SLASH ON THIS ONE'S ARGUMENTS
 install_dotfile() {
     local src="$1"
     local dest="$2"
@@ -140,7 +141,7 @@ giffoni_related() {
 
             log "Getting external hard drive files..."
             sudo mount /dev/sda1 /mnt
-            install_dotfile /mnt/.mpdscribble/ $HOME/.mpdscribble/
+            install_dotfile /mnt/.mpdscribble $HOME/.mpdscribble
             rsync -av --delete --progress /mnt/Music/ $HOME/Music/
             rsync -av --delete --progress /mnt/Code $HOME/
 
