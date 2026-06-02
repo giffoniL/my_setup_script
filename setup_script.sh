@@ -21,10 +21,10 @@ error() {
     exit 1
 }
 
-# UNDER NO CIRCUMSTANCE PUT A TRAILING SLASH ON THIS ONE'S ARGUMENTS
+# usage: install_dotfile dotfile_source_dir dotfile_dest_dir
 install_dotfile() {
-    local src="$1"
-    local dest="$2"
+    local src="${1%/}"
+    local dest="${2%/}"
 
     [[ ! -d "$src" ]] && {
         error "Source must be a directory."
@@ -35,12 +35,15 @@ install_dotfile() {
 
     mkdir -p "$dest"
 
-    # current dots are backuped
-    for file in "$dest"; do
-        local backup="${file}.bak.$(date +%Y%m%d%H%M%S)"
-        log "Backing up $file -> $backup"
-        mv "$file" "$backup"
+    shopt -s dotglob nullglob
+
+    for dest_file in "$dest"/*; do
+        local backup="${dest_file}.bak.$(date +%Y%m%d%H%M%S)"
+        log "Backing up $dest_file -> $backup"
+        mv "$dest_file" "$backup"
     done
+
+    shopt -u dotglob nullglob
 
     cp -vr "$src/." "$dest"
 }
@@ -64,9 +67,9 @@ check_deps() {
 }
 
 install_apps() {
-    BASE_PKGS=(git rsync nano fastfetch greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace ttf-material-symbols-variable noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc rmpc mpdscribble brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
+    BASE_PKGS=(git rsync nano fastfetch greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace ttf-material-symbols-variable noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc rmpc mpdscribble cava brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
     DESKTOP_PKGS=(wayland niri xorg xwayland-satellite wl-clipboard fuzzel mako foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring awww swayidle)
-    APP_PKGS=(zed nicotine+ nautilus vesktop gimp steam celluloid loupe fragments obsidian seahorse gaphor solanum)
+    APP_PKGS=(firefox zed nicotine+ nautilus vesktop gimp steam celluloid loupe fragments obsidian seahorse gaphor solanum)
 
     PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
     PARU_PKGS=(mpd-discord-rpc)
