@@ -67,21 +67,20 @@ check_deps() {
 }
 
 install_apps() {
-    BASE_PKGS=(git rsync nano fastfetch greetd greetd-agreety fish fisher github-cli micro jdk-openjdk shfmt otf-monaspace ttf-nerd-fonts-symbols noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc rmpc mpdscribble cava brightnessctl flatpak tree beets bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask python-gobject python-langdetect python-librosa python-mpd2 python-pyacoustid python-pylast python-requests-oauthlib python-xdg python-titlecase)
+    BASE_PKGS=(git rsync nano fastfetch greetd greetd-agreety fish github-cli micro noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc rmpc mpdscribble cava brightnessctl flatpak tree bash-completion uv)
     DESKTOP_PKGS=(wayland niri xorg xwayland-satellite wl-clipboard fuzzel mako foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring awww swayidle)
-    APP_PKGS=(firefox zed nicotine+ nautilus vesktop gimp steam celluloid loupe fragments obsidian seahorse gaphor solanum errands)
+    APP_PKGS=(firefox-developer-edition zed nicotine+ nautilus vesktop gimp krita steam celluloid loupe seahorse)
 
     PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
-    PARU_PKGS=(mpd-discord-rpc)
+    PARU_PKGS=()
     FLATPAK_PKGS=(io.github.arijanj.Mimic com.stremio.Stremio)
 
     log "Installing packages..."
-    sudo pacman -Syu --needed "${PACMAN_PKGS[@]}"
+    sudo pacman -S --needed "${PACMAN_PKGS[@]}"
     paru -S --needed "${PARU_PKGS[@]}"
     flatpak install -y flathub "${FLATPAK_PKGS[@]}"
-    fish -c 'fisher install pure-fish/pure' # i just use this package...
-
-    log "Finished installing apps."
+    uv tool install beets
+    log "Finished installing packages."
 }
 
 configure_apps() {
@@ -114,7 +113,7 @@ configure_apps() {
     sudo cp -vr sys_configs/greetd_config.toml /etc/greetd/config.toml
 
     log "Enabling services..."
-    local USER_SERVICES=(mpd mpd-discord-rpc mpdscribble)
+    local USER_SERVICES=(mpd mpdscribble)
     local SYS_SERVICES=(greetd)
     for service in "${USER_SERVICES[@]}"; do
         systemctl --user enable "$service" || warn "Failed to enable $service."
@@ -145,8 +144,8 @@ giffoni_related() {
             log "Getting external hard drive files..."
             sudo mount /dev/sda1 /mnt
             install_dotfile /mnt/.mpdscribble $HOME/.mpdscribble
-            rsync -av --delete --progress /mnt/Music/ $HOME/Music/
-            rsync -av --delete --progress /mnt/Code $HOME/
+            rsync -rtv --progress /mnt/Music/ $HOME/Music/
+            rsync -rtv --progress /mnt/Code $HOME/
 
             log "Unmounting external hard drive..."
             sudo umount /mnt
@@ -164,29 +163,29 @@ giffoni_related() {
     done
 }
 
-grub_tweaks() {
-    log "Tweaking grub config..."
+# grub_tweaks() {
+#     log "Tweaking grub config..."
 
-    # find a line that starts with GRUB_CMDLINE_LINUX_DEFAULT, if it has the word "splash", removes that word
-    sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=.*splash/{
-      s/ splash//
-      s/splash //
-      s/splash//
-    }' /etc/default/grub
+#     # find a line that starts with GRUB_CMDLINE_LINUX_DEFAULT, if it has the word "splash", removes that word
+#     sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=.*splash/{
+#       s/ splash//
+#       s/splash //
+#       s/splash//
+#     }' /etc/default/grub
 
-    # find a line that starts with GRUB_TIMEOUT= and replace whatever its value is with, including quotes, '0'
-    sudo sed -i "s/^\(GRUB_TIMEOUT=\).*/\1'0'/" /etc/default/grub
+#     # find a line that starts with GRUB_TIMEOUT= and replace whatever its value is with, including quotes, '0'
+#     sudo sed -i "s/^\(GRUB_TIMEOUT=\).*/\1'0'/" /etc/default/grub
 
-    log "Applying new grub config..."
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
+#     log "Applying new grub config..."
+#     sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-    log "Finished tweaking grub."
-}
+#     log "Finished tweaking grub."
+# }
 
 check_deps pacman paru git awk sudo
 install_apps
 configure_apps
-grub_tweaks
+# grub_tweaks
 giffoni_related
 
 log "All done. Restart and enjoy."
