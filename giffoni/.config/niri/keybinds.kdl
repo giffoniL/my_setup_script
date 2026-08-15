@@ -93,7 +93,7 @@ binds {
 
     Mod+S       { toggle-window-floating; }
 
-    Mod+P { screenshot; }
+    Print { screenshot; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here

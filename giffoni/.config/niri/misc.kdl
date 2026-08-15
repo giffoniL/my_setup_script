@@ -30,12 +30,15 @@ environment {
 }
 
 cursor {
-    xcursor-size 40
-    hide-after-inactive-ms 3000
+    // xcursor-theme "breeze_cursors"
+    xcursor-size 34
+
+    // hide-when-typing
+    hide-after-inactive-ms 8000
 }
 
 overview {
-    zoom 0.5
+    zoom 0.8
     // backdrop-color "#262626"
 
     workspace-shadow {
@@ -53,21 +56,22 @@ xwayland-satellite {
 }
 
 clipboard {
-    // disable-primary
+    disable-primary
 }
 
 hotkey-overlay {
     skip-at-startup
+    hide-not-bound
 }
 
 config-notification {
-    // disable-failed
+    disable-failed
 }
 
 blur {
     // off
     passes 3
-    offset 6.0
-    noise 0.00
-    saturation 1.0
+    offset 3.0
+    noise 0.02
+    saturation 1.5
 }
