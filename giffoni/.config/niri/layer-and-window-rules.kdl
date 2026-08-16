@@ -31,13 +31,6 @@ window-rule {
 }
 
 window-rule {
-    match app-id="^foot$"
-    background-effect {
-        blur true
-    }
-}
-
-window-rule {
     match app-id="org.gnome.Nautilus"
     open-floating true
     open-focused true
