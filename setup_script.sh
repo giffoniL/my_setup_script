@@ -36,6 +36,7 @@ configure_apps() {
         ".config/mako"
         ".config/mpd"
         ".config/beets"
+        ".config/ncmpcpp"
     )
 
     log "Setting up dotfiles..."
