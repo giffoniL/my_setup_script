@@ -8,7 +8,7 @@ source "utils.sh"
 install_apps() {
     BASE_PKGS=(git rsync nano fastfetch greetd greetd-agreety fish github-cli micro ttf-firacode-nerd noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra timidity++ mpd mpc ncmpcpp mpdscribble brightnessctl flatpak tree bash-completion uv)
     DESKTOP_PKGS=(wayland niri xorg xwayland-satellite wl-clipboard fuzzel mako foot polkit-gnome xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring awww swayidle)
-    APP_PKGS=(firefox-developer-edition zed nicotine+ nautilus vesktop gimp krita steam celluloid loupe seahorse)
+    APP_PKGS=(firefox zed nicotine+ nautilus vesktop gimp krita steam celluloid loupe seahorse)
 
     PACMAN_PKGS=("${BASE_PKGS[@]}" "${DESKTOP_PKGS[@]}" "${APP_PKGS[@]}")
     PARU_PKGS=()
