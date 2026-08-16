@@ -82,9 +82,9 @@ giffoni_related() {
 
             log "Getting external hard drive files..."
             sudo mount /dev/sda1 /mnt
-            install_dotfile /mnt/.mpdscribble $HOME/.mpdscribble
             rsync -rtv --progress /mnt/Music/ $HOME/Music/
-            rsync -rtv --progress /mnt/Code $HOME/
+            cp -vr /mnt/.mpdscribble $HOME/
+            cp -vr /mnt/Code $HOME/
 
             log "Unmounting external hard drive..."
             sudo umount /mnt
